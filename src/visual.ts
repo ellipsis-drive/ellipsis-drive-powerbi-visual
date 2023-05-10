@@ -49,22 +49,34 @@ export class Visual implements IVisual {
         this.updateCount = 0;
         if (document) {
             const new_p: HTMLElement = document.createElement("p");
+            new_p.appendChild(document.createTextNode("Ellipsis Drive Test Visual"));
             new_p.appendChild(document.createTextNode("Update count:"));
             const new_em: HTMLElement = document.createElement("em");
             this.textNode = document.createTextNode(this.updateCount.toString());
             new_em.appendChild(this.textNode);
             new_p.appendChild(new_em);
             this.target.appendChild(new_p);
+
+
+            const new_iframe: HTMLElement = document.createElement("iframe");
+            new_iframe.setAttribute("src", "https://app.ellipsis-drive.com/view?pathId=92b55e70-3b4d-413b-991d-d0ae7f736b78&hideNavbar=true");
+            new_iframe.setAttribute("width", "100%");
+            new_iframe.setAttribute("height", "100%");
+            new_iframe.setAttribute("frameborder", "0");
+            new_iframe.onclick = () => { console.log('iframe click'); };
+            // this.target.appendChild(new_iframe)
         }
+        this.target.onclick = () => { console.log('click'); };
+        this.target.setAttribute("style", "background-color: white;");
     }
 
     public update(options: VisualUpdateOptions) {
         this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews);
-
-        console.log('Visual update', options);
         if (this.textNode) {
             this.textNode.textContent = (this.updateCount++).toString();
         }
+
+        const url: string = this.formattingSettings.dataPointCard.iframeSrc.value;
     }
 
     /**

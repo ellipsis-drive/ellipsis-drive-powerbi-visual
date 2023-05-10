@@ -66,9 +66,16 @@ class DataPointCardSettings extends FormattingSettingsCard {
         value: 12
     });
 
+    iframeSrc = new formattingSettings.TextInput({
+        name: "iframeSrc",
+        displayName: "Iframe source",
+        placeholder: "Enter url",
+        value: ""
+    });
+
     name: string = "dataPoint";
     displayName: string = "Data colors";
-    slices: Array<FormattingSettingsSlice> = [this.defaultColor, this.showAllDataPoints, this.fill, this.fillRule, this.fontSize];
+    slices: Array<FormattingSettingsSlice> = [this.defaultColor, this.showAllDataPoints, this.fill, this.fillRule, this.fontSize, this.iframeSrc];
 }
 
 /**
