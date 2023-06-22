@@ -41,42 +41,92 @@ export class Visual implements IVisual {
     private textNode: Text;
     private formattingSettings: VisualFormattingSettingsModel;
     private formattingSettingsService: FormattingSettingsService;
+    private iframesrc: string;
+    private iframediv: HTMLElement;
+    private iframe: HTMLIFrameElement;
+    private curLanding: boolean = false; // false because we want to render the landing page first
+    private renderedUrl: string;
 
     constructor(options: VisualConstructorOptions) {
         console.log('Visual constructor', options);
         this.formattingSettingsService = new FormattingSettingsService();
         this.target = options.element;
-        this.updateCount = 0;
-        if (document) {
-            const new_p: HTMLElement = document.createElement("p");
-            new_p.appendChild(document.createTextNode("Ellipsis Drive Test Visual"));
-            new_p.appendChild(document.createTextNode("Update count:"));
-            const new_em: HTMLElement = document.createElement("em");
-            this.textNode = document.createTextNode(this.updateCount.toString());
-            new_em.appendChild(this.textNode);
-            new_p.appendChild(new_em);
-            this.target.appendChild(new_p);
 
+        this.renderLandingPage();
 
-            const new_iframe: HTMLElement = document.createElement("iframe");
-            new_iframe.setAttribute("src", "https://app.ellipsis-drive.com/view?pathId=92b55e70-3b4d-413b-991d-d0ae7f736b78&hideNavbar=true");
-            new_iframe.setAttribute("width", "100%");
-            new_iframe.setAttribute("height", "100%");
-            new_iframe.setAttribute("frameborder", "0");
-            new_iframe.onclick = () => { console.log('iframe click'); };
-            // this.target.appendChild(new_iframe)
+        // add event listener for ellipsis drive messages
+        window.addEventListener('message', function (e) {
+            console.log("Event Handler");
+            // Get the sent data
+            const data = e.data;
+        
+            // parse the message as a json;
+            const decoded = JSON.parse(data);
+            
+            //check the action type of the message and the data of the message
+            console.log('action type is ', decoded.action)
+            //data of the action is
+            console.log('data of action is', decoded.data)
+        });
+
+    }
+
+    private renderLandingPage() {
+        if (this.curLanding) { // don't re-render
+            return;
         }
-        this.target.onclick = () => { console.log('click'); };
-        this.target.setAttribute("style", "background-color: white;");
+        this.curLanding = true;
+        console.log("render landing page");
+        this.target.innerHTML = "";
+        
+        const p = document.createElement("p");
+        p.appendChild(document.createTextNode("Welcome to the Ellipsis Drive Power BI visual. Please enter the url of the Ellipsis Drive page you want to display in the visual settings."));
+        this.target.appendChild(p);
+    }
+
+    private renderIframe(src: string) {
+        this.curLanding = false;
+        if (this.renderedUrl == src) { // don't re-render if the url hasn't changed
+            return;
+        }
+        this.renderedUrl = src;
+        console.log("render iframe");        
+        this.target.innerHTML = "";
+        this.iframe = document.createElement("iframe");
+        this.iframe.setAttribute("style", "width: 100%; height: 100%;");
+
+        let url = new URL(src);
+        url.searchParams.delete("hideNavbar");
+        url.searchParams.append("hideNavbar", "true");
+        this.iframe.setAttribute("src", url.toString());
+        
+        this.target.appendChild(this.iframe);
+
+    }
+
+    private isValidUrl(url: string) {
+        try {
+            new URL(url);
+        } catch (_) {
+            return false;
+        }
+        return true;
     }
 
     public update(options: VisualUpdateOptions) {
+        console.log('Visual update', options);
         this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews);
-        if (this.textNode) {
-            this.textNode.textContent = (this.updateCount++).toString();
-        }
 
-        const url: string = this.formattingSettings.dataPointCard.iframeSrc.value;
+        console.log(this.formattingSettings.dataPointCard.iframeSrc.value);
+
+        const url = this.formattingSettings.dataPointCard.iframeSrc.value;
+        console.log(this.isValidUrl(url));
+
+        if (this.isValidUrl(url)) {
+            this.renderIframe(url);
+        } else {
+            this.renderLandingPage( )
+        }
     }
 
     /**
