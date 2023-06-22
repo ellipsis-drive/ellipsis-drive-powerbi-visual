@@ -80,5 +80,11 @@
             }
         }
     ],
-    "privileges": []
+    "privileges": [{
+        "name": "WebAccess",
+        "essential": true,
+        "parameters": [ "*.ellipsis-drive.com"]
+    }],
+    "supportsLandingPage": true,
+    "supportsEmptyDataView": true
 }
