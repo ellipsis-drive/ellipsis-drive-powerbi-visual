@@ -7,12 +7,12 @@
         "version": "1.0.0",
         "description": "",
         "supportUrl": "",
-        "gitHubUrl": ""
+        "gitHubUrl": "https://github.com/ellipsis-drive/ellipsis-drive-powerbi-visual"
     },
     "apiVersion": "5.1.0",
     "author": {
-        "name": "",
-        "email": ""
+        "name": "Floyd Remmerswaal",
+        "email": "floyd@ellipsis-drive.com"
     },
     "assets": {
         "icon": "assets/icon.png"
