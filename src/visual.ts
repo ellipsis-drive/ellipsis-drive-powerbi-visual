@@ -37,12 +37,8 @@ import { VisualFormattingSettingsModel } from "./settings";
 
 export class Visual implements IVisual {
     private target: HTMLElement;
-    private updateCount: number;
-    private textNode: Text;
     private formattingSettings: VisualFormattingSettingsModel;
     private formattingSettingsService: FormattingSettingsService;
-    private iframesrc: string;
-    private iframediv: HTMLElement;
     private iframe: HTMLIFrameElement;
     private curLanding: boolean = false; // false because we want to render the landing page first
     private renderedUrl: string;
@@ -51,8 +47,6 @@ export class Visual implements IVisual {
         console.log('Visual constructor', options);
         this.formattingSettingsService = new FormattingSettingsService();
         this.target = options.element;
-
-        this.renderLandingPage();
 
         // add event listener for ellipsis drive messages
         window.addEventListener('message', function (e) {
@@ -69,12 +63,12 @@ export class Visual implements IVisual {
             console.log('data of action is', decoded.data)
         });
 
+
+        
+        this.renderLandingPage();
     }
 
-    private renderLandingPage() {
-        if (this.curLanding) { // don't re-render
-            return;
-        }
+    private renderLandingPage() {``
         this.curLanding = true;
         console.log("render landing page");
         this.target.innerHTML = "";
@@ -85,10 +79,10 @@ export class Visual implements IVisual {
     }
 
     private renderIframe(src: string) {
-        this.curLanding = false;
-        if (this.renderedUrl == src) { // don't re-render if the url hasn't changed
+        if (this.renderedUrl === src) { // don't re-render if the url hasn't changed
             return;
         }
+        this.curLanding = false;
         this.renderedUrl = src;
         console.log("render iframe");        
         this.target.innerHTML = "";
