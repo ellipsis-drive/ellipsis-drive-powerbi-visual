@@ -33,6 +33,8 @@ import VisualConstructorOptions = powerbi.extensibility.visual.VisualConstructor
 import VisualUpdateOptions = powerbi.extensibility.visual.VisualUpdateOptions;
 import IVisual = powerbi.extensibility.visual.IVisual;
 
+import IVisualEventService = powerbi.extensibility.IVisualEventService;
+
 import { VisualFormattingSettingsModel } from "./settings";
 
 export class Visual implements IVisual {
@@ -42,14 +44,9 @@ export class Visual implements IVisual {
     private iframe: HTMLIFrameElement;
     private curLanding: boolean = false; // false because we want to render the landing page first
     private renderedUrl: string;
+    private events: IVisualEventService;
 
-    constructor(options: VisualConstructorOptions) {
-        console.log('Visual constructor', options);
-        this.formattingSettingsService = new FormattingSettingsService();
-        this.target = options.element;
-
-        // add event listener for ellipsis drive messages
-        window.addEventListener('message', function (e) {
+    private handleEvent(e: MessageEvent) {
             console.log("Event Handler");
             // Get the sent data
             const data = e.data;
@@ -61,14 +58,22 @@ export class Visual implements IVisual {
             console.log('action type is ', decoded.action)
             //data of the action is
             console.log('data of action is', decoded.data)
-        });
+    }
 
 
+    constructor(options: VisualConstructorOptions) {
+        console.log('Visual constructor', options);
+        this.formattingSettingsService = new FormattingSettingsService();
+        this.target = options.element;
+
+        this.events = options.host.eventService;
         
         this.renderLandingPage();
     }
 
-    private renderLandingPage() {``
+    private renderLandingPage() {
+        window.removeEventListener('message', this.handleEvent);
+
         this.curLanding = true;
         console.log("render landing page");
         this.target.innerHTML = "";
@@ -94,10 +99,18 @@ export class Visual implements IVisual {
         url.searchParams.append("hideNavbar", "true");
         this.iframe.setAttribute("src", url.toString());
         
+        // add event listener for ellipsis drive messages
+        window.addEventListener('message', this.handleEvent);
+
         this.target.appendChild(this.iframe);
 
     }
 
+    /* 
+    * Checks if a url is valid
+    * @param url - the url to check
+    * @returns true if the url is valid, false otherwise
+    */
     private isValidUrl(url: string) {
         try {
             new URL(url);
@@ -108,19 +121,27 @@ export class Visual implements IVisual {
     }
 
     public update(options: VisualUpdateOptions) {
+        // notify that the visual is rendering
+        this.events.renderingStarted(options);
+
         console.log('Visual update', options);
         this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews);
-
-        console.log(this.formattingSettings.dataPointCard.iframeSrc.value);
-
         const url = this.formattingSettings.dataPointCard.iframeSrc.value;
-        console.log(this.isValidUrl(url));
 
+        // render the iframe if the url is valid, otherwise render the landing page
         if (this.isValidUrl(url)) {
             this.renderIframe(url);
         } else {
             this.renderLandingPage( )
         }
+        // notify that the visual has finished rendering
+        this.events.renderingFinished(options);
+    }
+
+    public destroy(): void {
+        // clean up event listener
+        window.removeEventListener('message', this.handleEvent);
+
     }
 
     /**
