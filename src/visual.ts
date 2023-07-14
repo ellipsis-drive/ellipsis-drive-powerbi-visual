@@ -37,6 +37,8 @@ import IVisualEventService = powerbi.extensibility.IVisualEventService;
 
 import { VisualFormattingSettingsModel } from "./settings";
 
+import {IFilter, BasicFilterOperators} from 'powerbi-models';
+
 export class Visual implements IVisual {
     private target: HTMLElement;
     private formattingSettings: VisualFormattingSettingsModel;
@@ -72,8 +74,11 @@ export class Visual implements IVisual {
     }
 
     private renderLandingPage() {
+        if (this.curLanding) { // don't re-render if we're already on the landing page
+            return;
+        }
+        // clean up event listener
         window.removeEventListener('message', this.handleEvent);
-
         this.curLanding = true;
         console.log("render landing page");
         this.target.innerHTML = "";
@@ -81,6 +86,7 @@ export class Visual implements IVisual {
         const p = document.createElement("p");
         p.appendChild(document.createTextNode("Welcome to the Ellipsis Drive Power BI visual. Please enter the url of the Ellipsis Drive page you want to display in the visual settings."));
         this.target.appendChild(p);
+        console.log(this.target);
     }
 
     private renderIframe(src: string) {
@@ -150,5 +156,12 @@ export class Visual implements IVisual {
      */
     public getFormattingModel(): powerbi.visuals.FormattingModel {
         return this.formattingSettingsService.buildFormattingModel(this.formattingSettings);
+        
     }
+}
+
+export interface IBasicFilter extends IFilter {
+    operator: BasicFilterOperators;
+    values: (string | number | boolean)[];
+
 }

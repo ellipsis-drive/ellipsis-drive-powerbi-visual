@@ -41,12 +41,27 @@ class DataPointCardSettings extends FormattingSettingsCard {
         name: "iframeSrc",
         displayName: "Ellipsis Drive url",
         placeholder: "Enter url",
+        value: "https://app.ellipsis-drive.com/view?pathId=92b55e70-3b4d-413b-991d-d0ae7f736b78&hideNavbar=true"
+    });
+
+    propertyName = new formattingSettings.TextInput({
+        name: "propertyName",
+        displayName: "Property Name",
+        placeholder: "Enter property name",
         value: ""
     });
 
+    dataName = new formattingSettings.TextInput({
+        name: "dataName",
+        displayName: "Data Name",
+        placeholder: "Enter data name",
+        value: ""
+    });
+
+
     name: string = "dataPoint";
     displayName: string = "Ellipsis Drive Settings";
-    slices: Array<FormattingSettingsSlice> = [this.iframeSrc];
+    slices: Array<FormattingSettingsSlice> = [this.iframeSrc, this.propertyName, this.dataName];
 }
 
 /**

@@ -29,6 +29,16 @@
                     "type": {
                         "text": true
                     }
+                },
+                "propertyName": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "dataName": {
+                    "type": {
+                        "text": true
+                    }
                 }
             }
         }
