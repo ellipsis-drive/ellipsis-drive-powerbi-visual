@@ -37,8 +37,25 @@ import IVisualEventService = powerbi.extensibility.IVisualEventService;
 
 import { VisualFormattingSettingsModel } from "./settings";
 
-import {IFilter, BasicFilterOperators} from 'powerbi-models';
+import {ITupleFilterTarget} from 'powerbi-models';
 
+
+import * as models from "powerbi-models";
+
+import IVisualHost = powerbi.extensibility.visual.IVisualHost;
+import IFilterColumnTarget = models.IFilterColumnTarget;
+import IAdvancedFilterCondition = models.IAdvancedFilterCondition;
+import FilterAction = powerbi.FilterAction;
+import IAdvancedFilter = models.IAdvancedFilter;
+import AdvancedFilter = models.AdvancedFilter;
+import VisualObjectInstanceEnumeration = powerbi.VisualObjectInstanceEnumeration;
+
+/**
+ * Interface for search text view model. stolen from https://community.fabric.microsoft.com/t5/Developer/Visual-filtering-using-Advanced-Filter-API/m-p/1379950#M25788
+ */
+interface ViewModel {
+    filterColumns: IFilterColumnTarget[];
+};
 export class Visual implements IVisual {
     private target: HTMLElement;
     private formattingSettings: VisualFormattingSettingsModel;
@@ -47,6 +64,8 @@ export class Visual implements IVisual {
     private curLanding: boolean = false; // false because we want to render the landing page first
     private renderedUrl: string;
     private events: IVisualEventService;
+    private viewModel: ViewModel;
+    private visualHost: IVisualHost;
 
     private handleEvent(e: MessageEvent) {
             console.log("Event Handler");
@@ -67,6 +86,8 @@ export class Visual implements IVisual {
         console.log('Visual constructor', options);
         this.formattingSettingsService = new FormattingSettingsService();
         this.target = options.element;
+
+        this.visualHost = options.host;
 
         this.events = options.host.eventService;
         
@@ -134,14 +155,61 @@ export class Visual implements IVisual {
         this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews);
         const url = this.formattingSettings.dataPointCard.iframeSrc.value;
 
+        const propertyName = this.formattingSettings.dataPointCard.propertyName.value;
+
+        const doFilter = this.formattingSettings.dataPointCard.enableFilter.value;
+
         // render the iframe if the url is valid, otherwise render the landing page
         if (this.isValidUrl(url)) {
             this.renderIframe(url);
         } else {
             this.renderLandingPage( )
         }
+
+        this.viewModel = this.getViewModel(options);
+        // temporary hack: filter the visual
+        if (doFilter){
+            this.filter(this.formattingSettings.dataPointCard);
+        }
+        else {
+            this.visualHost.applyJsonFilter(null, "general", "filter", FilterAction.remove);
+        }
+
         // notify that the visual has finished rendering
         this.events.renderingFinished(options);
+    }
+
+
+    private getViewModel(options: VisualUpdateOptions): ViewModel{
+        //declare the data view
+        let dataView = options.dataViews[0];
+        let tableDataView = dataView.table;
+
+        //set an empty view model
+        let viewModel: ViewModel = {
+            filterColumns: []
+        };
+
+        //return empty view model if there's no data to show
+        if (!tableDataView
+            || !tableDataView.rows
+            || !tableDataView.columns) {
+            return viewModel;
+        }
+        
+        //declare columns
+        let cols = tableDataView.columns;
+
+        //iterate cols and push the columns properties to the view model
+        cols.forEach(col => {
+            viewModel.filterColumns.push(
+                {table: col.queryName.substr(0, col.queryName.indexOf('.')),
+                column: col.displayName
+                }
+            )
+        });
+
+        return viewModel;
     }
 
     public destroy(): void {
@@ -158,10 +226,42 @@ export class Visual implements IVisual {
         return this.formattingSettingsService.buildFormattingModel(this.formattingSettings);
         
     }
-}
 
-export interface IBasicFilter extends IFilter {
-    operator: BasicFilterOperators;
-    values: (string | number | boolean)[];
+    //private filter(target: IFilterColumnTarget, operator: any, text: string) {
+    
+    private filter(settings) {
+
+        console.log("filtering");
+        console.log(settings);
+   
+        const table = settings.tableName.value;
+        const column = settings.columnName.value;
+
+        const operator = settings.filterType.value;
+        const filtervalue = settings.filterValue.value;
+
+        const advancedFilter: models.IAdvancedFilter = {
+            target: {
+              table: table,
+              column: column
+            },
+            logicalOperator: "Or",
+            conditions: [
+              {
+                operator: operator.value,
+                value: filtervalue,
+              },
+            ],
+            $schema: "http://powerbi.com/product/schema#advanced",
+            filterType: models.FilterType.Advanced
+          };
+        
+        console.log(advancedFilter);
+
+        // invoke the filter
+        this.visualHost.applyJsonFilter(advancedFilter, "general", "filter", FilterAction.merge);
+        this.visualHost
+    }
+
 
 }

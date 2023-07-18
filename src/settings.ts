@@ -37,12 +37,52 @@ import FormattingSettingsModel = formattingSettings.Model;
  */
 class DataPointCardSettings extends FormattingSettingsCard {
 
+    enableFilter = new formattingSettings.ToggleSwitch({
+        name: "enableFilter",
+        displayName: "Enable Filter",
+        value: false
+    });
+
+
     iframeSrc = new formattingSettings.TextInput({
         name: "iframeSrc",
         displayName: "Ellipsis Drive url",
         placeholder: "Enter url",
         value: "https://app.ellipsis-drive.com/view?pathId=92b55e70-3b4d-413b-991d-d0ae7f736b78&hideNavbar=true"
     });
+
+    // "None" | "LessThan" | "LessThanOrEqual" | "GreaterThan" | "GreaterThanOrEqual" | "Contains" | "DoesNotContain" | "StartsWith" | "DoesNotStartWith" | "Is" | "IsNot" | "IsBlank" | "IsNotBlank" | "IsEmptyString" | "IsNotEmptyString";
+
+    filterType = new formattingSettings.ItemDropdown({
+        name: "filterType",
+        displayName: "Filter Type",
+        items: [
+            { value: "none", displayName: "None" },
+            { value: "lessThan", displayName: "Less Than" },
+            { value: "lessThanOrEqual", displayName: "Less Than Or Equal" },
+            { value: "greaterThan", displayName: "Greater Than" },
+            { value: "greaterThanOrEqual", displayName: "Greater Than Or Equal" },
+            { value: "contains", displayName: "Contains" },
+            { value: "doesNotContain", displayName: "Does Not Contain" },
+            { value: "startsWith", displayName: "Starts With" },
+            { value: "doesNotStartWith", displayName: "Does Not Start With" },
+            { value: "is", displayName: "Is" },
+            { value: "isNot", displayName: "Is Not" },
+            { value: "isBlank", displayName: "Is Blank" },
+            { value: "isNotBlank", displayName: "Is Not Blank" },
+            { value: "isEmptyString", displayName: "Is Empty String" },
+            { value: "isNotEmptyString", displayName: "Is Not Empty String" },
+        ],
+        value: {value: "none", displayName: "None"}
+    });
+
+    filterValue = new formattingSettings.TextInput({
+        name: "filterValue",
+        displayName: "Filter Value",
+        placeholder: "Enter filter value",
+        value: ""
+    });
+
 
     propertyName = new formattingSettings.TextInput({
         name: "propertyName",
@@ -51,17 +91,24 @@ class DataPointCardSettings extends FormattingSettingsCard {
         value: ""
     });
 
-    dataName = new formattingSettings.TextInput({
-        name: "dataName",
-        displayName: "Data Name",
-        placeholder: "Enter data name",
+    tableName = new formattingSettings.TextInput({
+        name: "tableName",
+        displayName: "Table Name",
+        placeholder: "Enter table name",
+        value: ""
+    });
+
+    columnName = new formattingSettings.TextInput({
+        name: "columnName",
+        displayName: "Column Name",
+        placeholder: "Enter column name",
         value: ""
     });
 
 
     name: string = "dataPoint";
     displayName: string = "Ellipsis Drive Settings";
-    slices: Array<FormattingSettingsSlice> = [this.iframeSrc, this.propertyName, this.dataName];
+    slices: Array<FormattingSettingsSlice> = [this.enableFilter, this.iframeSrc, this.filterType, this.filterValue, this.propertyName, this.tableName, this.columnName];
 }
 
 /**

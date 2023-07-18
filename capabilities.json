@@ -25,7 +25,38 @@
         },
         "dataPoint": {
             "properties": {
+                "enableFilter": {
+                    "type": {
+                        "bool": true
+                    }
+                },
                 "iframeSrc": {
+                    "type": {
+                        "text": true
+                    }
+                },
+                "filterType": {
+                    "type": {
+                        "enumeration": [
+                            { "value": "none", "displayName": "None" },
+                            { "value": "lessThan", "displayName": "Less Than" },
+                            { "value": "lessThanOrEqual", "displayName": "Less Than Or Equal" },
+                            { "value": "greaterThan", "displayName": "Greater Than" },
+                            { "value": "greaterThanOrEqual", "displayName": "Greater Than Or Equal" },
+                            { "value": "contains", "displayName": "Contains" },
+                            { "value": "doesNotContain", "displayName": "Does Not Contain" },
+                            { "value": "startsWith", "displayName": "Starts With" },
+                            { "value": "doesNotStartWith", "displayName": "Does Not Start With" },
+                            { "value": "is", "displayName": "Is" },
+                            { "value": "isNot", "displayName": "Is Not" },
+                            { "value": "isBlank", "displayName": "Is Blank" },
+                            { "value": "isNotBlank", "displayName": "Is Not Blank" },
+                            { "value": "isEmptyString", "displayName": "Is Empty String" },
+                            { "value": "isNotEmptyString", "displayName": "Is Not Empty String" }
+                        ]
+                    }
+                },
+                "filterValue": {
                     "type": {
                         "text": true
                     }
@@ -35,7 +66,12 @@
                         "text": true
                     }
                 },
-                "dataName": {
+                "tableName": {
+                    "type": {
+                        "text": true
+                    }
+                },                
+                "columnName": {
                     "type": {
                         "text": true
                     }
