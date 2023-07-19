@@ -53,27 +53,27 @@ class DataPointCardSettings extends FormattingSettingsCard {
 
     // "None" | "LessThan" | "LessThanOrEqual" | "GreaterThan" | "GreaterThanOrEqual" | "Contains" | "DoesNotContain" | "StartsWith" | "DoesNotStartWith" | "Is" | "IsNot" | "IsBlank" | "IsNotBlank" | "IsEmptyString" | "IsNotEmptyString";
 
-    filterType = new formattingSettings.ItemDropdown({
+    condition = new formattingSettings.ItemDropdown({
         name: "filterType",
         displayName: "Filter Type",
         items: [
-            { value: "none", displayName: "None" },
-            { value: "lessThan", displayName: "Less Than" },
-            { value: "lessThanOrEqual", displayName: "Less Than Or Equal" },
-            { value: "greaterThan", displayName: "Greater Than" },
-            { value: "greaterThanOrEqual", displayName: "Greater Than Or Equal" },
-            { value: "contains", displayName: "Contains" },
-            { value: "doesNotContain", displayName: "Does Not Contain" },
-            { value: "startsWith", displayName: "Starts With" },
-            { value: "doesNotStartWith", displayName: "Does Not Start With" },
-            { value: "is", displayName: "Is" },
-            { value: "isNot", displayName: "Is Not" },
-            { value: "isBlank", displayName: "Is Blank" },
-            { value: "isNotBlank", displayName: "Is Not Blank" },
-            { value: "isEmptyString", displayName: "Is Empty String" },
-            { value: "isNotEmptyString", displayName: "Is Not Empty String" },
+            { value: "None", displayName: "None" },
+            { value: "LessThan", displayName: "Less than" },
+            { value: "LessThanOrEqual", displayName: "Less than or equal" },
+            { value: "GreaterThan", displayName: "Greater than" },
+            { value: "GreaterThanOrEqual", displayName: "Greater than or equal" },
+            { value: "Contains", displayName: "Contains" },
+            { value: "DoesNotContain", displayName: "Does not contain" },
+            { value: "StartsWith", displayName: "Starts with" },
+            { value: "DoesNotStartWith", displayName: "Does not start with" },
+            { value: "Is", displayName: "Is" },
+            { value: "IsNot", displayName: "Is not" },
+            { value: "IsBlank", displayName: "Is blank" },
+            { value: "IsNotBlank", displayName: "Is not blank" },
+            { value: "IsEmptyString", displayName: "Is empty string" },
+            { value: "IsNotEmptyString", displayName: "Is not empty string" }
         ],
-        value: {value: "none", displayName: "None"}
+        value: {value: "None", displayName: "None"}
     });
 
     filterValue = new formattingSettings.TextInput({
@@ -108,7 +108,7 @@ class DataPointCardSettings extends FormattingSettingsCard {
 
     name: string = "dataPoint";
     displayName: string = "Ellipsis Drive Settings";
-    slices: Array<FormattingSettingsSlice> = [this.enableFilter, this.iframeSrc, this.filterType, this.filterValue, this.propertyName, this.tableName, this.columnName];
+    slices: Array<FormattingSettingsSlice> = [this.enableFilter, this.iframeSrc, this.condition, this.filterValue, this.propertyName, this.tableName, this.columnName];
 }
 
 /**

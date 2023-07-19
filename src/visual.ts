@@ -66,6 +66,7 @@ export class Visual implements IVisual {
     private events: IVisualEventService;
     private viewModel: ViewModel;
     private visualHost: IVisualHost;
+    private curProperties: any = null;
 
     private handleEvent(e: MessageEvent) {
             console.log("Event Handler");
@@ -75,6 +76,8 @@ export class Visual implements IVisual {
             // parse the message as a json;
             const decoded = JSON.parse(data);
             
+            this.curProperties = decoded.data.feature.properties;
+
             //check the action type of the message and the data of the message
             console.log('action type is ', decoded.action)
             //data of the action is
@@ -99,7 +102,7 @@ export class Visual implements IVisual {
             return;
         }
         // clean up event listener
-        window.removeEventListener('message', this.handleEvent);
+        window.removeEventListener('message', this.handleEvent.bind(this));
         this.curLanding = true;
         console.log("render landing page");
         this.target.innerHTML = "";
@@ -127,7 +130,7 @@ export class Visual implements IVisual {
         this.iframe.setAttribute("src", url.toString());
         
         // add event listener for ellipsis drive messages
-        window.addEventListener('message', this.handleEvent);
+        window.addEventListener('message', this.handleEvent.bind(this));
 
         this.target.appendChild(this.iframe);
 
@@ -155,8 +158,6 @@ export class Visual implements IVisual {
         this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews);
         const url = this.formattingSettings.dataPointCard.iframeSrc.value;
 
-        const propertyName = this.formattingSettings.dataPointCard.propertyName.value;
-
         const doFilter = this.formattingSettings.dataPointCard.enableFilter.value;
 
         // render the iframe if the url is valid, otherwise render the landing page
@@ -167,7 +168,7 @@ export class Visual implements IVisual {
         }
 
         this.viewModel = this.getViewModel(options);
-        // temporary hack: filter the visual
+
         if (doFilter){
             this.filter(this.formattingSettings.dataPointCard);
         }
@@ -237,8 +238,13 @@ export class Visual implements IVisual {
         const table = settings.tableName.value;
         const column = settings.columnName.value;
 
-        const operator = settings.filterType.value;
-        const filtervalue = settings.filterValue.value;
+        const operator = settings.condition.value;
+        const userFilterValue = settings.filterValue.value; // this will be changed into a property value of the vector object in the future, but for now it's just a string
+        const propertyName = settings.propertyName.value;
+
+        const filterValue = this.curProperties[propertyName];
+        
+        console.log(operator.value);
 
         const advancedFilter: models.IAdvancedFilter = {
             target: {
@@ -249,7 +255,7 @@ export class Visual implements IVisual {
             conditions: [
               {
                 operator: operator.value,
-                value: filtervalue,
+                value: filterValue,
               },
             ],
             $schema: "http://powerbi.com/product/schema#advanced",
@@ -260,7 +266,7 @@ export class Visual implements IVisual {
 
         // invoke the filter
         this.visualHost.applyJsonFilter(advancedFilter, "general", "filter", FilterAction.merge);
-        this.visualHost
+
     }
 
 
