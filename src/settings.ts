@@ -54,8 +54,8 @@ class DataPointCardSettings extends FormattingSettingsCard {
     // "None" | "LessThan" | "LessThanOrEqual" | "GreaterThan" | "GreaterThanOrEqual" | "Contains" | "DoesNotContain" | "StartsWith" | "DoesNotStartWith" | "Is" | "IsNot" | "IsBlank" | "IsNotBlank" | "IsEmptyString" | "IsNotEmptyString";
 
     condition = new formattingSettings.ItemDropdown({
-        name: "filterType",
-        displayName: "Filter Type",
+        name: "condition",
+        displayName: "Condition",
         items: [
             { value: "None", displayName: "None" },
             { value: "LessThan", displayName: "Less than" },

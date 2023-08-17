@@ -76,7 +76,7 @@ export class Visual implements IVisual {
             // parse the message as a json;
             const decoded = JSON.parse(data);
             
-            this.curProperties = decoded.data.feature.properties;
+            this.curProperties = decoded?.data?.feature.properties;
 
             //check the action type of the message and the data of the message
             console.log('action type is ', decoded.action)
@@ -234,16 +234,12 @@ export class Visual implements IVisual {
 
         console.log("filtering");
         console.log(settings);
-   
         const table = settings.tableName.value;
         const column = settings.columnName.value;
-
         const operator = settings.condition.value;
         const userFilterValue = settings.filterValue.value; // this will be changed into a property value of the vector object in the future, but for now it's just a string
         const propertyName = settings.propertyName.value;
 
-        const filterValue = this.curProperties[propertyName];
-        
         console.log(operator.value);
 
         const advancedFilter: models.IAdvancedFilter = {
@@ -255,17 +251,20 @@ export class Visual implements IVisual {
             conditions: [
               {
                 operator: operator.value,
-                value: filterValue,
+                value: userFilterValue,
               },
             ],
             $schema: "http://powerbi.com/product/schema#advanced",
             filterType: models.FilterType.Advanced
           };
         
+        console.log("Filter");
         console.log(advancedFilter);
 
         // invoke the filter
         this.visualHost.applyJsonFilter(advancedFilter, "general", "filter", FilterAction.merge);
+
+        console.log("done filtering");
 
     }
 

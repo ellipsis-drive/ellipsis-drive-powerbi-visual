@@ -5,8 +5,8 @@
         "guid": "ellipsisdrivevisual11FC03248C3241E6BDEAE83F25ED4433",
         "visualClassName": "Visual",
         "version": "1.0.0",
-        "description": "",
-        "supportUrl": "",
+        "description": "Ellipsis Drive Power BI Visual",
+        "supportUrl": "https://ellipsis-drive.com/contact",
         "gitHubUrl": "https://github.com/ellipsis-drive/ellipsis-drive-powerbi-visual"
     },
     "apiVersion": "5.1.0",
