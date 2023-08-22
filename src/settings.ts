@@ -73,7 +73,7 @@ class DataPointCardSettings extends FormattingSettingsCard {
             { value: "IsEmptyString", displayName: "Is empty string" },
             { value: "IsNotEmptyString", displayName: "Is not empty string" }
         ],
-        value: {value: "None", displayName: "None"}
+        value: {value: "Is", displayName: "Is"}
     });
 
     filterValue = new formattingSettings.TextInput({
@@ -88,21 +88,21 @@ class DataPointCardSettings extends FormattingSettingsCard {
         name: "propertyName",
         displayName: "Property Name",
         placeholder: "Enter property name",
-        value: ""
+        value: "iso_a2"
     });
 
     tableName = new formattingSettings.TextInput({
         name: "tableName",
         displayName: "Table Name",
         placeholder: "Enter table name",
-        value: ""
+        value: "Table"
     });
 
     columnName = new formattingSettings.TextInput({
         name: "columnName",
         displayName: "Column Name",
         placeholder: "Enter column name",
-        value: ""
+        value: "Name"
     });
 
 

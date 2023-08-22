@@ -76,12 +76,24 @@ export class Visual implements IVisual {
             // parse the message as a json;
             const decoded = JSON.parse(data);
             
-            this.curProperties = decoded?.data?.feature.properties;
+            if (decoded?.data?.feature.properties !== undefined){
+                this.curProperties = decoded?.data?.feature.properties;
+            }
 
             //check the action type of the message and the data of the message
             console.log('action type is ', decoded.action)
             //data of the action is
             console.log('data of action is', decoded.data)
+
+            console.log("curproperties: ");
+            console.log(this.curProperties);
+
+            const doFilter = this.formattingSettings.dataPointCard.enableFilter.value;
+
+            if (doFilter){
+                this.filter(this.formattingSettings.dataPointCard);
+            }
+
     }
 
 
@@ -242,6 +254,10 @@ export class Visual implements IVisual {
 
         console.log(operator.value);
 
+        console.log(this.curProperties);
+
+        const actualvalue = this.curProperties[propertyName];
+
         const advancedFilter: models.IAdvancedFilter = {
             target: {
               table: table,
@@ -251,7 +267,7 @@ export class Visual implements IVisual {
             conditions: [
               {
                 operator: operator.value,
-                value: userFilterValue,
+                value: actualvalue,
               },
             ],
             $schema: "http://powerbi.com/product/schema#advanced",
