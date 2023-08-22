@@ -249,7 +249,6 @@ export class Visual implements IVisual {
         const table = settings.tableName.value;
         const column = settings.columnName.value;
         const operator = settings.condition.value;
-        const userFilterValue = settings.filterValue.value; // this will be changed into a property value of the vector object in the future, but for now it's just a string
         const propertyName = settings.propertyName.value;
 
         console.log(operator.value);

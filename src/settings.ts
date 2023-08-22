@@ -76,14 +76,6 @@ class DataPointCardSettings extends FormattingSettingsCard {
         value: {value: "Is", displayName: "Is"}
     });
 
-    filterValue = new formattingSettings.TextInput({
-        name: "filterValue",
-        displayName: "Filter Value",
-        placeholder: "Enter filter value",
-        value: ""
-    });
-
-
     propertyName = new formattingSettings.TextInput({
         name: "propertyName",
         displayName: "Property Name",
@@ -108,7 +100,7 @@ class DataPointCardSettings extends FormattingSettingsCard {
 
     name: string = "dataPoint";
     displayName: string = "Ellipsis Drive Settings";
-    slices: Array<FormattingSettingsSlice> = [this.enableFilter, this.iframeSrc, this.condition, this.filterValue, this.propertyName, this.tableName, this.columnName];
+    slices: Array<FormattingSettingsSlice> = [this.enableFilter, this.iframeSrc, this.condition, this.propertyName, this.tableName, this.columnName];
 }
 
 /**
