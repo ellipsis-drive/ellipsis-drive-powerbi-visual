@@ -44,6 +44,7 @@ You will now see your bookmarks. Clicking "Link" will copy the link to that view
 ## Using the bookmark in the visual
 In the Installation step you should have managed to import the Ellipsis Drive visual into your Power BI report. If this is not the case, head back to the Installation step and try again.
 Add the Ellipsis Drive visual by clicking the Ellipsis Drive logo in the Visualizations section while in edit mode. This will open the visual. A landing page is displayed, as shown below.
+Note that I am using a very simple data set in this example, only consisting of two columns, a Name and SomeValue. "Name" contains the abbreviated name of a country (France is "FR").
 
 ![Landing page](assets/instructions/landing_page.png)
 
