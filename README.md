@@ -1,7 +1,8 @@
 # Power BI Custom visual for Ellipsis Drive.
 This custom visual provides an easy way to visualise and integrate your Ellipsis Drive data in your Power BI reports. See below for a video of the visual in action.
 
-![Video](assets/instructions/instructionvideo.mp4)
+https://github.com/ellipsis-drive/ellipsis-drive-powerbi-visual/assets/9056540/a948f9f7-cdeb-4d02-b11c-18254e0e86a6
+
 
 ## Installation
 In the near future, you will be able to install the Ellipsis Drive visual via the usual AppSource visual market.
