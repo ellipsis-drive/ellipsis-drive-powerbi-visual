@@ -120,6 +120,8 @@ export class Visual implements IVisual {
         } else if (url.startsWith("http://")) {
             return "https://" + url.substring(7);
         } else {
+            // assume no protocol is given, so add https
+            // might be better in the future to check for other protocols
             return "https://" + url;
         }
     }
@@ -167,6 +169,7 @@ export class Visual implements IVisual {
 
         this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews);
 
+        // get the url from the settings and add https if necessary
         const url = this.fixHttps(this.formattingSettings.dataPointCard.iframeSrc.value);
 
         const doFilter = this.formattingSettings.dataPointCard.enableFilter.value;
