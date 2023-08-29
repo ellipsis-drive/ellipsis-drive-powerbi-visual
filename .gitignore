@@ -2,4 +2,5 @@
 .tmp/
 node_modules/
 webpack.statistics.dev.html
+webpack.statistics.prod.html
 dist
