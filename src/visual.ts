@@ -110,7 +110,9 @@ export class Visual implements IVisual {
         this.target.innerHTML = "";
         
         const p = document.createElement("p");
-        p.appendChild(document.createTextNode("Welcome to the Ellipsis Drive Power BI visual. Please enter the url of the Ellipsis Drive page you want to display in the visual settings."));
+        p.appendChild(document.createTextNode("Welcome to the Ellipsis Drive Power BI visual."));
+        p.appendChild(document.createElement("br"));
+        p.appendChild(document.createTextNode("Please enter the url of the Ellipsis Drive bookmark you want to display in the visual settings."));
         this.target.appendChild(p);
     }
 
