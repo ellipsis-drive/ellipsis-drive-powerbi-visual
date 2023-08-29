@@ -7,12 +7,13 @@ https://github.com/ellipsis-drive/ellipsis-drive-powerbi-visual/assets/9056540/a
 ## Installation
 In the near future, you will be able to install the Ellipsis Drive visual via the usual AppSource visual market.
 For now, you have to manually load the Ellipsis Drive visual. To do this, download the latest release from our [GitHub releases](https://github.com/ellipsis-drive/ellipsis-drive-powerbi-visual/releases).
+Look for the file "ellipsis-drive-visual-vX.Y.Z.pbiviz".
 
 Then, in Power BI import the Visual by selecting "Import a visual from a file".
 
 ![Import File](assets/instructions/import_file.png)
 
-You will get a warning message. Click "Import" to import the visual.
+You will get a warning message. Click "Import" to import the visual, and find the downloaded visual on your computer.
 
 ![Caution Import](assets/instructions/caution_import.png)
 
