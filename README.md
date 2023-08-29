@@ -54,7 +54,6 @@ Click on "Ellipsis Drive Settings" to expand the settings, and you will see the 
 ![Empty settings](assets/instructions/empty_settings.png)
 
 Paste your bookmarked url in the Ellipsis Drive url setting. The visual should now render your view.
-You can edit some settings of the viewer by adding options to the url that you have entered. See [https://docs.ellipsis-drive.com/integrate-with-ed/use-viewer-as-embedded-window](https://docs.ellipsis-drive.com/integrate-with-ed/use-viewer-as-embedded-window) for the available options. I will be adding the option "hideSidePane=true".
 
 ![Render view](assets/instructions/render_view.png)
 
