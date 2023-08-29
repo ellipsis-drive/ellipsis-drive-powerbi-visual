@@ -170,6 +170,11 @@ export class Visual implements IVisual {
     * @returns true if the url is valid, false otherwise
     */
     private isValidUrl(url: string) {
+        // url needs to start with https
+        if (! url.startsWith("https://")) {
+            return false;
+        }
+
         try {
             new URL(url);
         } catch (_) {
