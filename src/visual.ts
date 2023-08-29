@@ -68,36 +68,17 @@ export class Visual implements IVisual {
     private visualHost: IVisualHost;
     private curProperties: any = null;
 
-    private fixHttps(url: string) {
-        if (url.startsWith("https://")) {
-            return url;
-        } else if (url.startsWith("http://")) {
-            return "https://" + url.substring(7);
-        } else {
-            return "https://" + url;
-        }
-    }
-
-
     private handleEvent(e: MessageEvent) {
-            console.log("Event Handler");
             // Get the sent data
             const data = e.data;
         
             // parse the message as a json;
             const decoded = JSON.parse(data);
             
+            // if the message is a feature click, set the properties
             if (decoded?.data?.feature.properties !== undefined){
                 this.curProperties = decoded?.data?.feature.properties;
             }
-
-            //check the action type of the message and the data of the message
-            console.log('action type is ', decoded.action)
-            //data of the action is
-            console.log('data of action is', decoded.data)
-
-            console.log("curproperties: ");
-            console.log(this.curProperties);
 
             const doFilter = this.formattingSettings.dataPointCard.enableFilter.value;
 
@@ -109,7 +90,6 @@ export class Visual implements IVisual {
 
 
     constructor(options: VisualConstructorOptions) {
-        console.log('Visual constructor', options);
         this.formattingSettingsService = new FormattingSettingsService();
         this.target = options.element;
 
@@ -127,13 +107,21 @@ export class Visual implements IVisual {
         // clean up event listener
         window.removeEventListener('message', this.handleEvent.bind(this));
         this.curLanding = true;
-        console.log("render landing page");
         this.target.innerHTML = "";
         
         const p = document.createElement("p");
         p.appendChild(document.createTextNode("Welcome to the Ellipsis Drive Power BI visual. Please enter the url of the Ellipsis Drive page you want to display in the visual settings."));
         this.target.appendChild(p);
-        console.log(this.target);
+    }
+
+    private fixHttps(url: string) {
+        if (url.startsWith("https://")) {
+            return url;
+        } else if (url.startsWith("http://")) {
+            return "https://" + url.substring(7);
+        } else {
+            return "https://" + url;
+        }
     }
 
     private renderIframe(src: string) {
@@ -142,17 +130,12 @@ export class Visual implements IVisual {
         }
         this.curLanding = false;
         this.renderedUrl = src;
-        console.log("render iframe");        
         this.target.innerHTML = "";
         this.iframe = document.createElement("iframe");
         this.iframe.setAttribute("style", "width: 100%; height: 100%;");
 
-        let theurl: string = src;
-        if (! src.startsWith("http://") && ! src.startsWith("https://")) {
-            theurl = "https://" + src;
-        }
+        let url = new URL(src);
 
-        let url = new URL(theurl);
         url.searchParams.delete("hideNavbar");
         url.searchParams.append("hideNavbar", "true");
         this.iframe.setAttribute("src", url.toString());
@@ -170,11 +153,6 @@ export class Visual implements IVisual {
     * @returns true if the url is valid, false otherwise
     */
     private isValidUrl(url: string) {
-        // url needs to start with https
-        if (! url.startsWith("https://")) {
-            return false;
-        }
-
         try {
             new URL(url);
         } catch (_) {
@@ -187,9 +165,9 @@ export class Visual implements IVisual {
         // notify that the visual is rendering
         this.events.renderingStarted(options);
 
-        console.log('Visual update', options);
         this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews);
-        const url = this.fixHttps(this.formattingSettings.dataPointCard.iframeSrc.value)
+
+        const url = this.fixHttps(this.formattingSettings.dataPointCard.iframeSrc.value);
 
         const doFilter = this.formattingSettings.dataPointCard.enableFilter.value;
 
@@ -265,20 +243,12 @@ export class Visual implements IVisual {
     
     private filter(settings) {
 
-        console.log("filtering");
-        console.log(settings);
         const table = settings.tableName.value;
         const column = settings.columnName.value;
         const operator = settings.condition.value;
         const propertyName = settings.propertyName.value;
-
-        console.log(operator.value);
-
-        console.log(this.curProperties);
-
-        const actualvalue = this.curProperties[propertyName];
+        const value = this.curProperties[propertyName];
         
-
         const advancedFilter: models.IAdvancedFilter = {
             target: {
               table: table,
@@ -288,20 +258,16 @@ export class Visual implements IVisual {
             conditions: [
               {
                 operator: operator.value,
-                value: actualvalue,
+                value: value,
               },
             ],
             $schema: "http://powerbi.com/product/schema#advanced",
             filterType: models.FilterType.Advanced
           };
         
-        console.log("Filter");
-        console.log(advancedFilter);
 
         // invoke the filter
         this.visualHost.applyJsonFilter(advancedFilter, "general", "filter", FilterAction.merge);
-
-        console.log("done filtering");
 
     }
 
