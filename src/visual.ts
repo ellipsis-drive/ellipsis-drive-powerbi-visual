@@ -68,6 +68,17 @@ export class Visual implements IVisual {
     private visualHost: IVisualHost;
     private curProperties: any = null;
 
+    private fixHttps(url: string) {
+        if (url.startsWith("https://")) {
+            return url;
+        } else if (url.startsWith("http://")) {
+            return "https://" + url.substring(7);
+        } else {
+            return "https://" + url;
+        }
+    }
+
+
     private handleEvent(e: MessageEvent) {
             console.log("Event Handler");
             // Get the sent data
@@ -136,7 +147,12 @@ export class Visual implements IVisual {
         this.iframe = document.createElement("iframe");
         this.iframe.setAttribute("style", "width: 100%; height: 100%;");
 
-        let url = new URL(src);
+        let theurl: string = src;
+        if (! src.startsWith("http://") && ! src.startsWith("https://")) {
+            theurl = "https://" + src;
+        }
+
+        let url = new URL(theurl);
         url.searchParams.delete("hideNavbar");
         url.searchParams.append("hideNavbar", "true");
         this.iframe.setAttribute("src", url.toString());
@@ -168,7 +184,7 @@ export class Visual implements IVisual {
 
         console.log('Visual update', options);
         this.formattingSettings = this.formattingSettingsService.populateFormattingSettingsModel(VisualFormattingSettingsModel, options.dataViews);
-        const url = this.formattingSettings.dataPointCard.iframeSrc.value;
+        const url = this.fixHttps(this.formattingSettings.dataPointCard.iframeSrc.value)
 
         const doFilter = this.formattingSettings.dataPointCard.enableFilter.value;
 
@@ -256,6 +272,7 @@ export class Visual implements IVisual {
         console.log(this.curProperties);
 
         const actualvalue = this.curProperties[propertyName];
+        
 
         const advancedFilter: models.IAdvancedFilter = {
             target: {
