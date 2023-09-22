@@ -137,6 +137,7 @@ export class Visual implements IVisual {
         this.target.innerHTML = "";
         this.iframe = document.createElement("iframe");
         this.iframe.setAttribute("style", "width: 100%; height: 100%;");
+        this.iframe.setAttribute("sandbox", "allow-same-origin allow-forms allow-scripts");
 
         let url = new URL(src);
 
