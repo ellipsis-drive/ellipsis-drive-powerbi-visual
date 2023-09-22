@@ -100,7 +100,7 @@
     "privileges": [{
         "name": "WebAccess",
         "essential": true,
-        "parameters": [ "*.ellipsis-drive.com"]
+        "parameters": [ "*.ellipsis-drive.com", "*.wikipedia.org", "wikipedia.org"]
     }],
     "supportsLandingPage": true,
     "supportsEmptyDataView": true
