@@ -32,6 +32,8 @@ Give your bookmark a name, I use the name "visual example", and then click "Save
 
 ![Bookmark Name](assets/instructions/bookmark_name.png)
 
+NOTE YOU CAN CUSTOMIZE THE LOOK OF YOUR MAP BY PICKING THE CUSTOM CONFIGURATION OPTION. YOU CAN FOR EXAMPLE CHOOSE TO HIDE THE SIDE PANE HERE.
+
 You will see the "updated bookmark" notification in the bottom of your screen. Click "To bookmarks". Alternatively, you can go to your bookmarks via [https://app.ellipsis-drive.com/bookmarks](https://app.ellipsis-drive.com/bookmarks).
 
 ![Go to bookmarks](assets/instructions/bookmark_tobookmark.png)
