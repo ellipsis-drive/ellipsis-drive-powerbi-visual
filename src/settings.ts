@@ -24,9 +24,9 @@
  *  THE SOFTWARE.
  */
 
-"use strict";
+'use strict';
 
-import { formattingSettings } from "powerbi-visuals-utils-formattingmodel";
+import { formattingSettings } from 'powerbi-visuals-utils-formattingmodel';
 
 import FormattingSettingsCard = formattingSettings.Card;
 import FormattingSettingsSlice = formattingSettings.Slice;
@@ -36,80 +36,84 @@ import FormattingSettingsModel = formattingSettings.Model;
  * Data Point Formatting Card
  */
 class DataPointCardSettings extends FormattingSettingsCard {
+  enableFilter = new formattingSettings.ToggleSwitch({
+    name: 'enableFilter',
+    displayName: 'Enable Filter',
+    value: false,
+  });
 
-    enableFilter = new formattingSettings.ToggleSwitch({
-        name: "enableFilter",
-        displayName: "Enable Filter",
-        value: false
-    });
+  iframeSrc = new formattingSettings.TextInput({
+    name: 'iframeSrc',
+    displayName: 'Ellipsis Drive url',
+    placeholder: 'Enter url',
+    value: '',
+  });
 
+  // "None" | "LessThan" | "LessThanOrEqual" | "GreaterThan" | "GreaterThanOrEqual" | "Contains" | "DoesNotContain" | "StartsWith" | "DoesNotStartWith" | "Is" | "IsNot" | "IsBlank" | "IsNotBlank" | "IsEmptyString" | "IsNotEmptyString";
 
-    iframeSrc = new formattingSettings.TextInput({
-        name: "iframeSrc",
-        displayName: "Ellipsis Drive url",
-        placeholder: "Enter url",
-        value: ""
-    });
+  condition = new formattingSettings.ItemDropdown({
+    name: 'condition',
+    displayName: 'Condition',
+    items: [
+      { value: 'None', displayName: 'None' },
+      { value: 'LessThan', displayName: 'Less than' },
+      { value: 'LessThanOrEqual', displayName: 'Less than or equal' },
+      { value: 'GreaterThan', displayName: 'Greater than' },
+      { value: 'GreaterThanOrEqual', displayName: 'Greater than or equal' },
+      { value: 'Contains', displayName: 'Contains' },
+      { value: 'DoesNotContain', displayName: 'Does not contain' },
+      { value: 'StartsWith', displayName: 'Starts with' },
+      { value: 'DoesNotStartWith', displayName: 'Does not start with' },
+      { value: 'Is', displayName: 'Is' },
+      { value: 'IsNot', displayName: 'Is not' },
+      { value: 'IsBlank', displayName: 'Is blank' },
+      { value: 'IsNotBlank', displayName: 'Is not blank' },
+      { value: 'IsEmptyString', displayName: 'Is empty string' },
+      { value: 'IsNotEmptyString', displayName: 'Is not empty string' },
+    ],
+    value: { value: 'None', displayName: 'None' },
+  });
 
-    // "None" | "LessThan" | "LessThanOrEqual" | "GreaterThan" | "GreaterThanOrEqual" | "Contains" | "DoesNotContain" | "StartsWith" | "DoesNotStartWith" | "Is" | "IsNot" | "IsBlank" | "IsNotBlank" | "IsEmptyString" | "IsNotEmptyString";
+  propertyName = new formattingSettings.TextInput({
+    name: 'propertyName',
+    displayName: 'Property Name',
+    placeholder: 'Enter property name',
+    value: '',
+  });
 
-    condition = new formattingSettings.ItemDropdown({
-        name: "condition",
-        displayName: "Condition",
-        items: [
-            { value: "None", displayName: "None" },
-            { value: "LessThan", displayName: "Less than" },
-            { value: "LessThanOrEqual", displayName: "Less than or equal" },
-            { value: "GreaterThan", displayName: "Greater than" },
-            { value: "GreaterThanOrEqual", displayName: "Greater than or equal" },
-            { value: "Contains", displayName: "Contains" },
-            { value: "DoesNotContain", displayName: "Does not contain" },
-            { value: "StartsWith", displayName: "Starts with" },
-            { value: "DoesNotStartWith", displayName: "Does not start with" },
-            { value: "Is", displayName: "Is" },
-            { value: "IsNot", displayName: "Is not" },
-            { value: "IsBlank", displayName: "Is blank" },
-            { value: "IsNotBlank", displayName: "Is not blank" },
-            { value: "IsEmptyString", displayName: "Is empty string" },
-            { value: "IsNotEmptyString", displayName: "Is not empty string" }
-        ],
-        value: {value: "None", displayName: "None"}
-    });
+  tableName = new formattingSettings.TextInput({
+    name: 'tableName',
+    displayName: 'Table Name',
+    placeholder: 'Enter table name',
+    value: '',
+  });
 
-    propertyName = new formattingSettings.TextInput({
-        name: "propertyName",
-        displayName: "Property Name",
-        placeholder: "Enter property name",
-        value: ""
-    });
+  columnName = new formattingSettings.TextInput({
+    name: 'columnName',
+    displayName: 'Column Name',
+    placeholder: 'Enter column name',
+    value: '',
+  });
 
-    tableName = new formattingSettings.TextInput({
-        name: "tableName",
-        displayName: "Table Name",
-        placeholder: "Enter table name",
-        value: ""
-    });
-
-    columnName = new formattingSettings.TextInput({
-        name: "columnName",
-        displayName: "Column Name",
-        placeholder: "Enter column name",
-        value: ""
-    });
-
-
-    name: string = "dataPoint";
-    displayName: string = "Ellipsis Drive Settings";
-    slices: Array<FormattingSettingsSlice> = [this.enableFilter, this.iframeSrc, this.condition, this.propertyName, this.tableName, this.columnName];
+  name: string = 'dataPoint';
+  displayName: string = 'Ellipsis Drive Settings';
+  slices: Array<FormattingSettingsSlice> = [
+    this.enableFilter,
+    this.iframeSrc,
+    this.condition,
+    this.propertyName,
+    this.tableName,
+    this.columnName,
+  ];
 }
 
 /**
-* visual settings model class
-*
-*/
+ * visual settings model class
+ *
+ */
 export class VisualFormattingSettingsModel extends FormattingSettingsModel {
-    // Create formatting settings model formatting cards
-    dataPointCard = new DataPointCardSettings();
+  // Create formatting settings model formatting cards
+  dataPointCard = new DataPointCardSettings();
 
-    cards = [this.dataPointCard];
+  cards = [this.dataPointCard];
 }
