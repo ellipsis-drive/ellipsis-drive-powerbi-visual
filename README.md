@@ -4,7 +4,7 @@ This custom visual provides an easy way to visualise and integrate your Ellipsis
 https://github.com/ellipsis-drive/ellipsis-drive-powerbi-visual/assets/9056540/ab4fc594-701c-4f32-855d-1d3a1491038b
 
 ## Installation
-You will be able to install the Ellipsis Drive visual via the usual AppSource visual market.
+You can install the Ellipsis Drive visual via the usual AppSource visual market.
 Alternatively you can manually load the Ellipsis Drive visual. To do this, download the latest release from our [GitHub releases](https://github.com/ellipsis-drive/ellipsis-drive-powerbi-visual/releases).
 Look for the file "ellipsis-drive-visual-vX.Y.Z.pbiviz".
 
@@ -21,10 +21,9 @@ The result will look as follows. Note the Ellipsis Drive icon that has appeared 
 ![Import Result](assets/instructions/import_result.png)
 
 
-
 ## Creating a bookmark
-Next, go to the Ellipsis Drive view that you want to use in your Power BI report. For this example I am using the [world map](https://app.ellipsis-drive.com/view?pathId=92b55e70-3b4d-413b-991d-d0ae7f736b78&state=a301ce01-07e7-4458-8fc6-e1c80d0dc7fb).
-To create a bookmark, select on "Save As" under the "Share" dropdown menu. Make sure to use either the 'presentation mode' type or 'custom' type where you check the 'hideNavbar' option.
+Go to the Ellipsis Drive viewer and creat the map you wisht to display in your dashboard. You can do so by opening the viewer and adding all relevant layers. You can also update the viewport and layer styling if required. For this example I am using the [world map](https://app.ellipsis-drive.com/view?pathId=92b55e70-3b4d-413b-991d-d0ae7f736b78&state=a301ce01-07e7-4458-8fc6-e1c80d0dc7fb).
+If your are satisfied with your map, create a bookmark. You can do so by going to the "Share" dropdown menu on the top right and clicking 'Save as bookmark'. While creating the bookmark you can choose to either use the 'presentation mode' type or 'custom' type where you can choose to hide certain elements of the viewer to clean up the map (for example hiding the navigation controls or the side pane).
 
 ![Create Bookmark](assets/instructions/bookmark_saveas.png)
 
@@ -35,6 +34,8 @@ Give your bookmark a name, I use the name "visual example", and then click "Save
 NOTE YOU CAN CUSTOMIZE THE LOOK OF YOUR MAP FURTHER BY PICKING THE CUSTOM CONFIGURATION OPTION. YOU CAN FOR EXAMPLE CHOOSE TO HIDE THE SIDE PANE HERE.
 
 Now copy the url and head back to powerBI.
+
+TIP: make sure the parameter &hideNavbar=true is included in the url so that the navbar does not show up in your dashboard.
 
 ## Using the bookmark in the visual
 In the Installation step you should have managed to import the Ellipsis Drive visual into your Power BI report. If this is not the case, head back to the Installation step and try again.
