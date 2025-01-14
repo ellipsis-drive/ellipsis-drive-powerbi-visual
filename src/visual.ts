@@ -155,6 +155,16 @@ export class Visual implements IVisual {
     this.iframe = document.createElement('iframe');
     this.iframe.setAttribute('style', 'width: 100%; height: 100%;');
 
+    let targetString = 'app.ellipsis-drive.com';
+    let cutLength = targetString.length;
+    let targetIndex = src.indexOf(targetString);
+
+    if (targetIndex >= 0) {
+      src = `https://app.powerbi.ellipsis-drive.com` + src.substring(targetIndex + cutLength);
+    }
+    
+    console.log(`Opening url: ${src}`);
+
     const url = new URL(src);
 
     url.searchParams.delete('hideNavbar');

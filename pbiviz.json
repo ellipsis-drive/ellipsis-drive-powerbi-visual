@@ -4,7 +4,7 @@
     "displayName": "Ellipsis Drive",
     "guid": "ellipsisdrivevisual11FC03248C3241E6BDEAE83F25ED4433",
     "visualClassName": "Visual",
-    "version": "1.0.0.0",
+    "version": "1.0.3.0",
     "description": "Ellipsis Drive Power BI Visual",
     "supportUrl": "https://ellipsis-drive.com/contact",
     "gitHubUrl": "https://github.com/ellipsis-drive/ellipsis-drive-powerbi-visual"
