@@ -64,6 +64,8 @@ export class Visual implements IVisual {
   private visualHost: IVisualHost;
   private curProperties: any = null;
 
+  private eventFunction = this.handleEvent.bind(this)
+
   private handleEvent(e: MessageEvent) {
     // console.log('Got event');
 
@@ -76,17 +78,26 @@ export class Visual implements IVisual {
     // console.log(decoded);
 
     let action = decoded?.action;
+    let properties = decoded?.data?.feature.properties;
+    // console.log(properties);
 
     if (action === 'featureClick') {
-      // console.log('Received featureClick');
       // if the message is a feature click, set the properties
-      if (decoded?.data?.feature.properties !== undefined) {
-        this.curProperties = decoded?.data?.feature.properties;
+      if (properties !== undefined) {
+        this.curProperties = properties;
+        // console.log('Received featureClick');
       }
-    } else if (action === 'deselectFeature') {
+    } 
+    else if (action === 'deselectFeature') {
       // console.log('Received deselectFeature');
-      this.curProperties = {};
+
+      if (this.curProperties.id === properties.id) {
+        // console.log('Unsetting');
+        this.curProperties = {};
+      }
     }
+
+    // console.log(`After: `, this.curProperties);
 
     const doFilter = this.formattingSettings.dataPointCard.enableFilter.value;
 
@@ -115,7 +126,7 @@ export class Visual implements IVisual {
     // console.log('Rendering landing');
 
     // clean up event listener
-    window.removeEventListener('message', this.handleEvent.bind(this));
+    window.removeEventListener('message', this.eventFunction);
     this.curLanding = true;
     this.target.innerHTML = '';
 
@@ -163,7 +174,7 @@ export class Visual implements IVisual {
       src = `https://app.powerbi.ellipsis-drive.com` + src.substring(targetIndex + cutLength);
     }
     
-    console.log(`Opening url: ${src}`);
+    // console.log(`Opening url: ${src}`);
 
     const url = new URL(src);
 
@@ -172,7 +183,7 @@ export class Visual implements IVisual {
     this.iframe.setAttribute('src', url.toString());
 
     // add event listener for ellipsis drive messages
-    window.addEventListener('message', this.handleEvent.bind(this));
+    window.addEventListener('message', this.eventFunction);
 
     this.target.appendChild(this.iframe);
   }
@@ -265,7 +276,7 @@ export class Visual implements IVisual {
 
   public destroy(): void {
     // clean up event listener
-    window.removeEventListener('message', this.handleEvent);
+    window.removeEventListener('message', this.eventFunction);
   }
 
   /**
